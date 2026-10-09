@@ -6,8 +6,10 @@ import java.util.UUID;
 
 public record CustomerId (UUID uuid){
 
-    public CustomerId(UUID uuid){
+    public CustomerId{
         Assert.notNull(uuid, "Id must be not null");
-        this.uuid = UUID.randomUUID();
+    }
+    public CustomerId(){
+        this(UUID.randomUUID());
     }
 }

@@ -1,0 +1,26 @@
+services:
+  db_mp:
+    image: mysql:9.6
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PWD}
+      MYSQL_USER: ${MYSQL_USR}
+      MYSQL_PASSWORD: ${MYSQL_PWD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - registration_mp_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uapp", "-papp"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+     - mp_network
+
+volumes:
+  registration_mp_data:
+
+networks:
+  mp_network:
+    driver: bridge

@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface CustomerRepository {
     Customer save(Customer customer);
-    public List<Customer> findAll();
+    List<Customer> findAll();
 
 }
