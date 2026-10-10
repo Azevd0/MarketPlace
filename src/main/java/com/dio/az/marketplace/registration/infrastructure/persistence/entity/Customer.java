@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 public class Customer {
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     @Column(nullable = false)
     private String firstName;
@@ -39,6 +39,11 @@ public class Customer {
     public Customer(){
     }
 
-
+    @PrePersist
+    public void prePersistId(){
+        if(id == null){
+            id = UUID.randomUUID();
+        }
+    }
 
 }

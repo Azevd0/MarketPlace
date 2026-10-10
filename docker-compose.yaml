@@ -1,4 +1,5 @@
 services:
+  #------------------------------DATABASE SERIVCE------------------------------------#
   db_mp:
     image: mysql:9.6
     environment:
@@ -18,8 +19,33 @@ services:
     networks:
      - mp_network
 
+  #----------------------------------CATALOG SERVICE-----------------------------------------#
+
+  catalog-db:
+    image: mysql:9.1.0
+    container_name: catalog-db
+    restart: always
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_CATALOG_ROOT_PWD}
+      MYSQL_DATABASE: ${MTSQL_CATALOG_DB}
+      MYSQL_USER: ${MYSQL_CATALOG_USER}
+      MYSQL_PASSWORD: ${MYSQL_CATALOG_PWD}
+    volumes:
+      - catalog_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uapp", "-papp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mp_network
+
+
 volumes:
   registration_mp_data:
+  catalog_data:
 
 networks:
   mp_network:
