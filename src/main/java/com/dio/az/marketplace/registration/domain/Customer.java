@@ -1,7 +1,11 @@
 package com.dio.az.marketplace.registration.domain;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.util.Assert;
 
+@Getter
+@Setter
 public class Customer {
     private CustomerId id;
     private String name;
