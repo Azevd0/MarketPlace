@@ -1,5 +1,6 @@
 package com.dio.az.marketplace.catalog.infrastructure.persistence.event;
 
+import com.dio.az.marketplace.catalog.infrastructure.event.EventListener;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -7,7 +8,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
-import java.util.EventListener;
 import java.util.UUID;
 
 @Entity
