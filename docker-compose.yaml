@@ -1,5 +1,5 @@
 services:
-  #------------------------------DATABASE SERIVCE------------------------------------#
+  #------------------------------ DATABASE SERIVCE ------------------------------------#
   db_mp:
     image: mysql:9.6
     environment:
@@ -19,7 +19,7 @@ services:
     networks:
      - mp_network
 
-  #----------------------------------CATALOG SERVICE-----------------------------------------#
+  #---------------------------------- CATALOG SERVICE -----------------------------------------#
 
   catalog-db:
     image: mysql:9.1.0
@@ -42,10 +42,28 @@ services:
     networks:
       - mp_network
 
+  #---------------------------------- MONGO SERVICE -----------------------------------------#
+
+  catalog-metadata-database:
+    image: mongo:8.2
+    ports:
+      - "27018:27017"
+    volumes:
+      - metadata_data:/data/lib
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    networks:
+      - mp_network
+
+
 
 volumes:
   registration_mp_data:
   catalog_data:
+  metadata_data:
 
 networks:
   mp_network:
