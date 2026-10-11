@@ -1,6 +1,6 @@
 package com.dio.az.marketplace.catalog.infrastructure.event;
 
-import com.dio.az.marketplace.catalog.infrastructure.persistence.event.Event;
+import com.dio.az.marketplace.catalog.infrastructure.persistence.entity.Event;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostRemove;
 import jakarta.persistence.PostUpdate;

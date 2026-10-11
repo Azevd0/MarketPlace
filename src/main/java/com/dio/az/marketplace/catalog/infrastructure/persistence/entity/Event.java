@@ -1,4 +1,4 @@
-package com.dio.az.marketplace.catalog.infrastructure.persistence.event;
+package com.dio.az.marketplace.catalog.infrastructure.persistence.entity;
 
 import com.dio.az.marketplace.catalog.infrastructure.event.EventListener;
 import jakarta.persistence.*;
