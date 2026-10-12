@@ -1,7 +1,9 @@
 package com.dio.az.marketplace.catalog.domain.sector_domain;
 
-import java.math.BigDecimal;
+import lombok.Data;
 
+import java.math.BigDecimal;
+@Data
 public class Sector {
     private SectorId id;
     private BigDecimal price;
