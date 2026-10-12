@@ -1,6 +1,5 @@
 package com.dio.az.marketplace.catalog.domain.event_domain;
 
-import com.dio.az.marketplace.catalog.infrastructure.persistence.entity.EventMetadata;
 import lombok.Getter;
 import lombok.Setter;
 
