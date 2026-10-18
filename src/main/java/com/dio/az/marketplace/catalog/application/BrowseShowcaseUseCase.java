@@ -1,5 +1,6 @@
 package com.dio.az.marketplace.catalog.application;
 
+import com.dio.az.marketplace.catalog.application.dto.EventOutput;
 import com.dio.az.marketplace.catalog.domain.event_domain.Event;
 import com.dio.az.marketplace.catalog.domain.event_domain.EventMetadataRepository;
 import com.dio.az.marketplace.catalog.domain.event_domain.EventRepository;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class BrowseShowcaseUseCase {
@@ -20,8 +22,13 @@ public class BrowseShowcaseUseCase {
         this.eventRepository = eventRepository;
         this.eventEnricher = eventEnricher;
     }
-    public List<Event> execute(){
-        var events = eventRepository.findAll().stream().map(eventEnricher::enrich).toList();
+    public List<EventOutput> execute(){
+        var futures = eventRepository.findAll().stream().map(eventEnricher::enrich).toList();
+        var events = futures.stream()
+                .map(CompletableFuture::join)
+                .map(EventOutput::from)
+                .toList();
+        logger.info("{} events enriched: ", events.size());
         return events;
     }
 }
