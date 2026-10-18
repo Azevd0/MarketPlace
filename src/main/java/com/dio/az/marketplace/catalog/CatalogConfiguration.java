@@ -42,7 +42,7 @@ public class CatalogConfiguration {
     }
     @Qualifier("catalog")
     @Bean(defaultCandidate = false)
-    @ConfigurationProperties("registration.jpa")
+    @ConfigurationProperties("catalog.jpa")
     public JpaProperties catalogJpaProperties(){
         return new JpaProperties();
     }

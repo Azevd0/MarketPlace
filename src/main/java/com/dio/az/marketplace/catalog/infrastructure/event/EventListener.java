@@ -12,18 +12,4 @@ import org.springframework.stereotype.Component;
 @Component
 @RepositoryEventHandler
 public class EventListener {
-    private static final Logger logger = LoggerFactory.getLogger(EventListener.class);
-
-    @PostPersist
-    public void onEventCreated(Event event){
-        logger.info("Event created via @PostPersist {}", event);
-    }
-    @PostUpdate
-    public void onEventUpdated(Event event){
-        logger.info("Event updated via @PostUpdate {}", event);
-    }
-    @PostRemove
-    public void onEventDeleted(Event event){
-        logger.info("Event deleted via @PostRemove {}", event);
-    }
 }

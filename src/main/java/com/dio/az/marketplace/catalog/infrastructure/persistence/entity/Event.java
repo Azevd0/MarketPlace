@@ -14,6 +14,7 @@ import java.util.UUID;
 @EntityListeners(EventListener.class)
 @Getter
 @Setter
+@Table(name = "Event")
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
