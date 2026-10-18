@@ -1,6 +1,7 @@
 package com.dio.az.marketplace.catalog.infrastructure.http;
 
 import com.dio.az.marketplace.catalog.application.BrowseShowcaseUseCase;
+import com.dio.az.marketplace.catalog.application.dto.EventOutput;
 import com.dio.az.marketplace.catalog.domain.event_domain.Event;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ public class ShowcaseController {
         this.browseShowcaseUseCase = browseShowcaseUseCase;
     }
     @GetMapping
-    public List<Event> browseShowcase(){
+    public List<EventOutput> browseShowcase(){
         return browseShowcaseUseCase.execute();
     }
 }

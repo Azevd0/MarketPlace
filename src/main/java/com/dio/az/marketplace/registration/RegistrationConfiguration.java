@@ -1,4 +1,4 @@
-package com.dio.az.marketplace.registration.infrastructure;
+package com.dio.az.marketplace.registration;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
