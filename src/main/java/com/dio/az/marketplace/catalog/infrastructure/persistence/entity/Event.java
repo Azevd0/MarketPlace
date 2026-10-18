@@ -36,4 +36,6 @@ public class Event {
         this.date = date;
         this.createdOn = createdOn;
     }
+    protected Event() {
+    }
 }
