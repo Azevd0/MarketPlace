@@ -37,7 +37,7 @@ public class CatalogConfiguration {
     @Qualifier("catalog")
     @Bean(defaultCandidate = false)
     @ConfigurationProperties("catalog.datasource.configuration")
-    public HikariDataSource catalogDataSource(@Qualifier("catalog") DataSourceProperties properties){
+    public HikariDataSource catalogDataSource(DataSourceProperties properties){
         return properties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
     @Qualifier("catalog")
