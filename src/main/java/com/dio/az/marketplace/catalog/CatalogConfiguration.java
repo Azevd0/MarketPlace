@@ -1,7 +1,9 @@
 package com.dio.az.marketplace.catalog;
 
 import com.zaxxer.hikari.HikariDataSource;
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
 import org.springframework.boot.jpa.EntityManagerFactoryBuilder;
@@ -28,17 +30,43 @@ import java.util.LinkedHashMap;
 @EnableMongoAuditing
 public class CatalogConfiguration {
 
-    @Qualifier("catalog")
-    @Bean(defaultCandidate = false)
-    @ConfigurationProperties("catalog.datasource")
-    public DataSourceProperties catalogDataSourceProperties(){
+    @Bean(name = "catalogDataSourceProperties", defaultCandidate = false)
+    @ConfigurationProperties(prefix = "catalog.datasource")
+    public DataSourceProperties catalogDataSourceProperties() {
         return new DataSourceProperties();
     }
-    @Qualifier("catalog")
-    @Bean(defaultCandidate = false)
-    @ConfigurationProperties("catalog.datasource.configuration")
-    public HikariDataSource catalogDataSource(@Qualifier("catalog") DataSourceProperties properties){
-        return properties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
+    @Bean
+    public ApplicationRunner verifyCatalogConnection(
+            @Qualifier("catalogDataSourceProperties")
+            DataSourceProperties properties,
+
+            @Qualifier("catalogDataSource")
+            DataSource dataSource) {
+
+        return args -> {
+
+            System.out.println("Configured URL: " + properties.getUrl());
+
+            try (var connection = dataSource.getConnection()) {
+
+                System.out.println(
+                        "Connected URL: " +
+                                connection.getMetaData().getURL()
+                );
+
+                System.out.println(
+                        "Database: " +
+                                connection.getCatalog()
+                );
+            }
+        };
+    }
+    @Bean(name = "catalogDataSource", defaultCandidate = false)
+    @ConfigurationProperties(prefix = "catalog.datasource.configuration")
+    public HikariDataSource catalogDataSource(@Qualifier("catalogDataSourceProperties") DataSourceProperties properties) {
+        return properties.initializeDataSourceBuilder()
+                .type(HikariDataSource.class)
+                .build();
     }
     @Qualifier("catalog")
     @Bean(defaultCandidate = false)
@@ -46,15 +74,17 @@ public class CatalogConfiguration {
     public JpaProperties catalogJpaProperties(){
         return new JpaProperties();
     }
-    @Qualifier("catalog")
-    @Bean(defaultCandidate = false)
-    public LocalContainerEntityManagerFactoryBean catalogEntityManagerFactory(@Qualifier("catalog") DataSource dataSource,
-                                                                              @Qualifier("catalog")JpaProperties jpaProperties){
+    @Bean(name = "catalogEntityManagerFactory", defaultCandidate = false)
+    public LocalContainerEntityManagerFactoryBean catalogEntityManagerFactory(
+            @Qualifier("catalogDataSource") DataSource dataSource,
+            @Qualifier("catalogJpaProperties") JpaProperties jpaProperties) {
+
         var builder = new EntityManagerFactoryBuilder(
                 new HibernateJpaVendorAdapter(),
                 x -> new LinkedHashMap<>(jpaProperties.getProperties()),
                 null
         );
+
         return builder
                 .dataSource(dataSource)
                 .packages("com.dio.az.marketplace.catalog")
@@ -62,10 +92,11 @@ public class CatalogConfiguration {
                 .build();
     }
 
-    @Qualifier("catalog")
-    @Bean
-    public PlatformTransactionManager catalogTransactionManager(@Qualifier("catalog")LocalContainerEntityManagerFactoryBean emf){
-        assert emf.getObject() != null;
-        return new JpaTransactionManager(emf.getObject());
+    @Bean(name = "catalogTransactionManager")
+    public PlatformTransactionManager catalogTransactionManager(
+            @Qualifier("catalogEntityManagerFactory")
+            EntityManagerFactory entityManagerFactory) {
+
+        return new JpaTransactionManager(entityManagerFactory);
     }
 }
