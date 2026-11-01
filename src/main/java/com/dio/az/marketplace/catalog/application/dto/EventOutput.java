@@ -5,6 +5,7 @@ package com.dio.az.marketplace.catalog.application.dto;
 import com.dio.az.marketplace.catalog.domain.event_domain.Event;
 import com.dio.az.marketplace.catalog.domain.event_domain.EventMetadata;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
@@ -16,17 +17,19 @@ public record EventOutput(
         String title,
         Instant date,
         EventMetadataOutput metadata
-) {
+) implements Serializable {
+
     public record EventMetadataOutput(
             String eventDescription,
             Map<String, Object> technicalRequirements,
             Map<String, List<SeatOutput>> seatsBySector
-    ){
+    ) implements Serializable {
+
         public record SeatOutput(
             String id,
             String sectorId,
             BigDecimal price
-        ){}
+        ) implements Serializable {}
         public static EventMetadataOutput from(EventMetadata metadata){
             Map<String, List<SeatOutput>> seats = metadata
                             .seats()
