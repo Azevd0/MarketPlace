@@ -1,4 +1,4 @@
-package com.dio.az.marketplace.ticketing.domain;
+package com.dio.az.marketplace.ticketing.domain.customer;
 
 import org.springframework.util.Assert;
 

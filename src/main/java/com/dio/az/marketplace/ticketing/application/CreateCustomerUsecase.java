@@ -1,8 +1,8 @@
 package com.dio.az.marketplace.ticketing.application;
 
 import com.dio.az.marketplace.commom.infrastructure.event.dto.CustomerCreated;
-import com.dio.az.marketplace.ticketing.domain.Customer;
-import com.dio.az.marketplace.ticketing.domain.CustomerRepository;
+import com.dio.az.marketplace.ticketing.domain.customer.Customer;
+import com.dio.az.marketplace.ticketing.domain.customer.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 @Service
