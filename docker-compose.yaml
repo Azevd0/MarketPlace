@@ -71,10 +71,30 @@ services:
     networks:
       - mp_network
 
+  #---------------------------------- TICKETING SERVICE -----------------------------------------#
+  ticketing-db:
+    image: postgres:18.3
+    environment:
+      POSTGRES_DB: ${PG_DB_NAME}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PWD: ${PG_PWD}
+    ports:
+      - "5433-5432"
+    volumes:
+      - ticketing_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d ticketing"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    networks:
+      - mp_network
+
 volumes:
   registration_mp_data:
   catalog_data:
   metadata_data:
+  ticketing_data:
 
 networks:
   mp_network:
