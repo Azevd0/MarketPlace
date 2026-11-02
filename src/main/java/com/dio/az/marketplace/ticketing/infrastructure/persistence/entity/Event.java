@@ -1,6 +1,5 @@
 package com.dio.az.marketplace.ticketing.infrastructure.persistence.entity;
 
-import com.dio.az.marketplace.ticketing.domain.sector_domain.Sector;
 import jakarta.persistence.*;
 import lombok.Data;
 
