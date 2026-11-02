@@ -13,10 +13,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class CreateEventUsecCase {
+public class CreateEventUseCase {
     private final EventRepository eventRepository;
 
-    public CreateEventUsecCase(EventRepository eventRepository) {
+    public CreateEventUseCase(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
     public void execute(EventUpdated event){
