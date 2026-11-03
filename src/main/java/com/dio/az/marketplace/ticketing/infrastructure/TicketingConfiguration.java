@@ -72,17 +72,25 @@ public class TicketingConfiguration {
         return new JpaTransactionManager(emf.getObject());
     }
 
-    @Primary
-    @Bean
-    public RedisConnectionFactory ticketingRedisConnectionFactory(@Value("${ticketing.redis.host}")String hostName,
-                                                                @Value("${ticketing.redis.port}") int port){
-        return new JedisConnectionFactory(new RedisStandaloneConfiguration(hostName, port));
+    @Bean(name = "ticketingRedisConnectionFactory")
+    public RedisConnectionFactory ticketingRedisConnectionFactory(
+            @Value("${ticketing.redis.host}") String hostName,
+            @Value("${ticketing.redis.port}") int port) {
+
+        return new JedisConnectionFactory(
+                new RedisStandaloneConfiguration(hostName, port)
+        );
     }
-    @Qualifier("ticketing")
-    @Bean
-    public RedisTemplate<?,?> ticketingRedisTemplate(@Qualifier("ticketing") RedisConnectionFactory connectionFactory){
-        RedisTemplate<byte[],byte[]> template = new RedisTemplate<>();
+    @Bean(name = "ticketingRedisTemplate")
+    public RedisTemplate<byte[], byte[]> ticketingRedisTemplate(
+            @Qualifier("ticketingRedisConnectionFactory")
+            RedisConnectionFactory connectionFactory) {
+
+        RedisTemplate<byte[], byte[]> template = new RedisTemplate<>();
+
         template.setConnectionFactory(connectionFactory);
+        template.afterPropertiesSet();
+
         return template;
     }
 }

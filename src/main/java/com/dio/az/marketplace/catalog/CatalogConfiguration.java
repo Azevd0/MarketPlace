@@ -107,14 +107,21 @@ public class CatalogConfiguration {
     }
 
     @Primary
-    @Bean
-    public RedisConnectionFactory catalogRedisConnectionFactory(@Value("${catalog.redis.host")String hostName,
-                                                                @Value("${catalog.redis.port") int port){
-        return new JedisConnectionFactory(new RedisStandaloneConfiguration(hostName, port));
+    @Bean(name = "catalogRedisConnectionFactory")
+    public RedisConnectionFactory catalogRedisConnectionFactory(
+            @Value("${catalog.redis.host}") String hostName,
+            @Value("${catalog.redis.port}") int port) {
+
+        return new JedisConnectionFactory(
+                new RedisStandaloneConfiguration(hostName, port)
+        );
     }
     @Primary
-    @Bean
-    public RedisCacheManager catalogCacheManager(RedisConnectionFactory connectionFactory){
+    @Bean(name = "catalogCacheManager")
+    public RedisCacheManager catalogCacheManager(
+            @Qualifier("catalogRedisConnectionFactory")
+            RedisConnectionFactory connectionFactory) {
+
         return RedisCacheManager.builder(connectionFactory).build();
     }
 }
