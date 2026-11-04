@@ -7,5 +7,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.UUID;
 @RepositoryRestResource(exported = false, path = "_event")
 public interface EventCRUDRepository extends CrudRepository<Event, UUID> {
-    boolean existsCorrelationIdAndSectors_Seats_CorrelationId(UUID eventId, String seatId);
+    boolean existsByCorrelationIdAndSectors_Seats_CorrelationId(UUID eventId, String seatId);
 }

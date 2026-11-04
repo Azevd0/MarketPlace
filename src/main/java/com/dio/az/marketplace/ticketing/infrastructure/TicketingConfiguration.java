@@ -16,6 +16,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -29,7 +30,7 @@ import java.util.LinkedHashMap;
 @EnableJpaRepositories(basePackages = "com.dio.az.marketplace.ticketing",
         entityManagerFactoryRef = "ticketingEntityManagerFactory",
         transactionManagerRef = "ticketingTransactionManager")
-@EnableRedisRepositories(basePackages = "m.dio.az.marketplace.ticketing", redisTemplateRef = "ticketingRedisTemplate")
+@EnableRedisRepositories(basePackages = "com.dio.az.marketplace.ticketing", redisTemplateRef = "ticketingRedisTemplate")
 public class TicketingConfiguration {
 
     @Qualifier("ticketing")
@@ -92,5 +93,12 @@ public class TicketingConfiguration {
         template.afterPropertiesSet();
 
         return template;
+    }
+    @Bean(name = "ticketingStringRedisTemplate")
+    public StringRedisTemplate ticketingStringRedisTemplate(
+            @Qualifier("ticketingRedisConnectionFactory")
+            RedisConnectionFactory connectionFactory) {
+
+        return new StringRedisTemplate(connectionFactory);
     }
 }
