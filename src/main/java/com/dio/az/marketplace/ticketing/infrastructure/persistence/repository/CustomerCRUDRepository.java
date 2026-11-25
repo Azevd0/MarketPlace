@@ -1,0 +1,11 @@
+package com.dio.az.marketplace.ticketing.infrastructure.persistence.repository;
+
+import com.dio.az.marketplace.ticketing.infrastructure.persistence.entity.Customer;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+import java.util.UUID;
+
+@RepositoryRestResource(exported = false, path = "_customer")
+public interface CustomerCRUDRepository extends CrudRepository<Customer, UUID> {
+}
