@@ -22,11 +22,11 @@ public class CustomerEventHandler {
         this.publisher = publisher;
     }
 
-    @HandleAfterCreate
+    @HandleAfterSave
     private void handleAfterCreate(Customer customer){
         logger.warn("CustomerEventHandler#handlerAfterCreate");
     }
-    @HandleAfterSave
+    @HandleAfterCreate
     private void handleBeforeCreate(Customer customer){
         logger.warn("CustomerEventHandler#handlerAfterSave");
         publisher.publishEvent(new CustomerCreated(customer.getId().toString(), customer.getFirstName()));
