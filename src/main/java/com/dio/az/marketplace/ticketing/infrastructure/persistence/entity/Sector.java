@@ -13,6 +13,8 @@ import java.util.UUID;
 public class Sector {
     @Id
     private UUID id;
+
+    @Column(nullable = false, unique = true)
     private String correlationId;
     private BigDecimal price;
 

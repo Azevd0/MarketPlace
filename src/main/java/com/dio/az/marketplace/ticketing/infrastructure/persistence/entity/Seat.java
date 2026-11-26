@@ -1,5 +1,6 @@
 package com.dio.az.marketplace.ticketing.infrastructure.persistence.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Data;
@@ -11,6 +12,8 @@ import java.util.UUID;
 public class Seat {
     @Id
     private UUID id;
+
+    @Column(nullable = false, unique = true)
     private String correlationId;
 
     public Seat(){}

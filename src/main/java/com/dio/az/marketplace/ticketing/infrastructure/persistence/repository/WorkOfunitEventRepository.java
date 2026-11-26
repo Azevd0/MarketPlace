@@ -11,10 +11,12 @@ import com.dio.az.marketplace.ticketing.infrastructure.persistence.entity.SeatLo
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class WorkOfunitEventRepository implements EventRepository {
@@ -28,11 +30,19 @@ public class WorkOfunitEventRepository implements EventRepository {
         this.redisTemplate = redisTemplate;
     }
 
+    @Transactional(transactionManager = "ticketingTransactionManager")
     @Override
     public void save(Event event) {
 
+        var existingEvent = eventCRUDRepository
+                .findByCorrelationId(event.getCorrelationId().id());
+
+        UUID eventId = existingEvent
+                .map(com.dio.az.marketplace.ticketing.infrastructure.persistence.entity.Event::getId)
+                .orElse(event.getId());
+
         var sectors = event.getSeats().entrySet().stream()
-                .map( entry -> {
+                .map(entry -> {
 
                     Sector domainSector = entry.getKey();
                     List<Seat> domainSeats = entry.getValue();
@@ -54,13 +64,14 @@ public class WorkOfunitEventRepository implements EventRepository {
                 .toList();
 
         var entity = new com.dio.az.marketplace.ticketing.infrastructure.persistence.entity.Event(
-                event.getId(),
+                eventId,
                 event.getCorrelationId().id(),
                 sectors
         );
 
         eventCRUDRepository.save(entity);
     }
+
 
     @Override
     public boolean existsSeat(EventId eventId, SeatId seatId) {
@@ -84,7 +95,7 @@ public class WorkOfunitEventRepository implements EventRepository {
                 .setIfAbsent(
                         lockKey,
                         customer,
-                        Duration.ofSeconds(30)
+                        Duration.ofSeconds(45)
                 );
 
         return Boolean.TRUE.equals(acquired);

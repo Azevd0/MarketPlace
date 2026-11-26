@@ -12,6 +12,8 @@ import java.util.UUID;
 public class Event {
     @Id
     private UUID id;
+
+    @Column(nullable = false, unique = true)
     private UUID correlationId;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
